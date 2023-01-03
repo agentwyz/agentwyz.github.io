@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>Go语言切片</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 5.4.2"></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>Go语言切片</h2><p>这篇文章主要介绍关于Go语言切片的一些知识</p>
+<h2 id="回顾"><a href="#回顾" class="headerlink" title="回顾"></a>回顾</h2><p>数组和切片最主要的区别在于数组的长度是固定的, 但是切片的长度是不可以改变的</p>
+<p>创建一个切片, 在Go语言中使用<code>make</code>关键字来创建一个切片</p>
+<pre><code class="go">slice := make([]string, 4, 4)
+
+if slice == nil &#123;
+    fmt.Println(&quot;slice is nil\n&quot;)
+&#125;
+</code></pre>
+<p>使用<code>make()</code>函数创建切片的时候, 第一个参数是类型字面量, 第二个参数是长度,  第三个参数是容量, 如果第三个参数没有写的话那么将默认和长度相同<br>我们可以使用内建的函数<code>len()</code>和<code>cap()</code>来查看切片的长度和容量。</p>
+<h2 id="切片的底层实现"><a href="#切片的底层实现" class="headerlink" title="切片的底层实现"></a>切片的底层实现</h2><p>如果你看过Go语言slice的底层实现的话, 应该会知道slice其实是一个结构体, 下面是slice的实现:</p>
+<pre><code class="go">type slice struct &#123;
+    array unsafe.Pointer
+    len int
+    cap int
+&#125;
+</code></pre>
+<ul>
+<li><p><code>array</code>是一个指针, 指向切片的底层数组, 这个指针不一定会指在数组的头部分, 也可能会指向数组的腰子</p>
+</li>
+<li><p><code>len</code>表示的是<strong>可以</strong>从底层数组<strong>取到元素的区间</strong>的长度, 如果没有写初始位置, 区间的初始位置就是0, 这个在后面会提到</p>
+</li>
+<li><p><code>cap</code>表示底层数组的长度, 但是这种情况仅限与make函数或切片值字面量初始化切片的情况</p>
+</li>
+</ul>
+<p>所以我们就会发现其实<code>len</code>和<code>cap</code>其实是起到一种限制array指针的作用。</p>
+<p>当我们通过切片表达式基于某个数组或切片生成一个新的切片的时候, 情况就会变得有点复杂</p>
+<pre><code class="go">s3 := []int &#123;1, 2, 3, 4, 5, 6, 7, 8&#125;
+s4 := s3[3:6]
+
+fmt.Printf(&quot;The length of s4: %d\n&quot;, len(s4))
+fmt.Printf(&quot;The capacity of s4: %d\n&quot;, cap(s4))
+fmt.Printf(&quot;The value of s4: %d\n&quot;, s4)
+</code></pre>
+<p>切片<code>s3</code>中有8个元素, 所以<code>s3</code>的容量和长度都为8, 然后我们基于<code>s3</code>生成了一个切片<code>s4</code>, 这样这两个切片就基于了同一个底层数组.</p>
+<p><img src="https://i.328888.xyz/2022/12/25/DxZFw.png" alt="DxZFw.png"></p>
+<p>那么问题来了切片<code>s4</code>的长度是多少?</p>
+<p>想搞清楚这个问题, 我们需要知道<code>[3:6]</code>这个表达式的含义, 这个表达式表示的是一种取值范围, 就像数学中的区间一样, 它表示的是<strong>能从底层数组取到的元素的区间</strong>, 同时需要注意的是这个区间是左开右闭的。上面的<code>[3:6]</code>实际上是<code>[3:6)</code>。长度(len)就是这个区间的范围, 所以切片<code>s4</code>的长度为<code>3</code>。</p>
+<p>下面这图中紫色方框表示的是可以从底层数组取到元素的区间<br><a target="_blank" rel="noopener" href="https://imgloc.com/i/DxYWH"><img src="https://i.328888.xyz/2022/12/25/DxYWH.png" alt="DxYWH.png"></a></p>
+<p>说完长度, 我们来说容量:</p>
+<p>上面我们说了容量的概念, 但是并不是很通用, </p>
+<p>更加通用的说法是: <strong>一个切片的容量是透过底层数组最多可以看到的元素的个数。记住是看到, 不是能取到, 这是两个完全不同的概念</strong>。所以<code>s4</code>的容量是<code>5</code>.</p>
+<p><a target="_blank" rel="noopener" href="https://imgloc.com/i/D7k9V"><img src="https://i.328888.xyz/2022/12/25/D7k9V.png" alt="D7k9V.png"></a></p>
+<h3 id="切片的扩容机制"><a href="#切片的扩容机制" class="headerlink" title="切片的扩容机制"></a>切片的扩容机制</h3><p>如果一个切片无法容纳更多的元素, Go就会进行扩容, 但它并不会改变原来的切片, 而是会生成一个容量更大的切片, 然后将把原有的元素和新元素一并拷贝到新切片中。在一般的情况下, 你可以简单地认为新切片的容量(以下简称新容量)将会是原切片容量(以下简称原容量)的 2 倍。</p>
+<p>但是, 当原切片的长度（以下简称原长度）大于或等于1024时, Go语言将会以原容量的1.25倍作为新容量的基准(以下新容量基准)。新容量基准会被调整(不断地与1.25相乘),直到结果不小于原长度与要追加的元素数量之和(以下简称新长度)。最终，新容量往往会比新长度大一些, 当然,相等也是可能的</p>
+<h3 id="append函数的操作"><a href="#append函数的操作" class="headerlink" title="append函数的操作"></a>append函数的操作</h3><p>不需要扩容时候, append函数返回的是指向原底层数组的原切片，而在需要扩容时，<code>append</code>函数返回的是指向新底层数组的新切片。</p>
+</div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>

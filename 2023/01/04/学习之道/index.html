@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>学习之道</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="stylesheet" href="/css/bootstrap/bootstrap-tooltips.css"><link rel="stylesheet" href="/css/post.css"><script src="/js/jquery.min.js"></script><meta name="generator" content="Hexo 5.4.2"></head><body><script>if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent)) {
+  document.body.classList.add('mobile')
+}</script><div><div class="inner"><h2>学习之道</h2><p>这篇文章既然叫做学习之道, 那么就是来说一些学习方法的。</p>
+<h2 id="建立知识体系"><a href="#建立知识体系" class="headerlink" title="建立知识体系"></a>建立知识体系</h2><p>有的人学了很多东西, 但是他却说出个所以然了来</p>
+<p>这是因为他没有形成一套属于自已的知识体系,</p>
+<p>在学习一个知识前, 我们首先要问问自已, 有什么?, 哪些不会?</p>
+<p>下面以我自已为例子来说一说:</p>
+<p>比如我在学习Go语言之前, 你首先应该问问自已, Go语言中有什么?</p>
+<ol>
+<li>包管理机制: GoPATH, GoMod, 包的导入路径有什么需要注意的点</li>
+<li>程序实体: 变量的作用域, 变量的重声明, 类型断言</li>
+<li>切片和数组: 切片封装了一个底层数组</li>
+<li>链表list, map</li>
+<li>通道: 通道在什么情况下会阻塞, select语句的使用</li>
+<li>函数: 在Go语言中函数为什么可以作为一等公民</li>
+<li>结构体: 结构体的嵌套, 方法</li>
+<li>指针: 哪些东西是可以进行取地址, 哪些东西不可以取地址</li>
+<li>接口: 方法实现接口, 这个方法是指针方法还是值方法, 如何实现, 如果是指针方法,有哪些注意点, 同时接口的动态类型为nil, 静态类型不为nil会怎么样。</li>
+<li>并发编程: 进程, 线程, goroutinue, 如果一个主goroutine结束后, 其它的goroutinue会怎么样, 如何让两个goroutinue进行同步</li>
+<li>if语句/for语句/switch语句: range需要有哪些注意点</li>
+<li>错误处理, panic, 异常<br>….</li>
+</ol>
+<p>Go语言中有哪些地方还没有掌握？</p>
+<ol>
+<li>for语句, switch语句的相关注意事项</li>
+<li>select语句</li>
+<li>list中的延时机制</li>
+<li>通道在什么情况下会发生阻塞</li>
+</ol>
+<h3 id="如何建立知识体系"><a href="#如何建立知识体系" class="headerlink" title="如何建立知识体系"></a>如何建立知识体系</h3><h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p>绘制思维导图有助于我们梳理好一个清晰的脉络, 这里就说一下使用思维导图,<br>具体的教程网上到处都是。</p>
+<h3 id="追溯法"><a href="#追溯法" class="headerlink" title="追溯法"></a>追溯法</h3><ol>
+<li>多份文章进行参考</li>
+<li>追溯源头</li>
+<li>听听大师怎么说</li>
+</ol>
+<p>有时候, 我们在解决问题的时候, 找到一份资料解决问题时候, 我们也不确定这个资料答案对不对,<br>这个时候我们就需要多份文档进行对比。</p>
+<p>如果出现歧义, 我们应该找到知识的源头, 主要是官方的文档。</p>
+<p>我们在寻找一些概念的时候, 我们应该看看提出这个概念的人怎么说</p>
+<h2 id="良好的心态"><a href="#良好的心态" class="headerlink" title="良好的心态"></a>良好的心态</h2><ol>
+<li><p>不要害怕遗忘<br> 编程中要很多知识, 所以你学了就忘记是正常的, 忘记了怎么办, 忘记了就再学呗。</p>
+</li>
+<li><p>戒骄戒躁, 全面发展</p>
+<p> 很多人, 在学一门编程语言的时候, 听说另外一门编程语言很好,立刻就跑去学,<br> 比如有的Java新手, 通说Go语言比较简单上手, 于是就跑去学习Go语言, 过段时间又觉得Go语言中的一些东西<br> 很难, 于是又跑去学Python, 最终一事无成。</p>
+<p> 同时, 只会一门语言是不成的, 就像只会C++人是不可能将C++学好的, 语言之间是相互促进的, 如果没有Lisp就没有今天Java的垃圾回收<br> 没有Haskell的泛型, 也就不会有Java的泛型, 我们需要取其精华, 剔其糟粕, 最终实现全面发展。</p>
+</li>
+<li><p>不要盲目的崇拜, 不要盲目的怀疑</p>
+<p> 学习编程语言, 既要看到编程语言的优点, 同时需要看到它的缺点, 好好的思考, 有时候坏事不一定坏事, 它甚至可以让你避免犯错<br> 我第一次理解面向对象的思想, 是在PHP中, 不是在C++中, 不是在Java中, 但是有可能这和当时我看到PHP资料有关系。</p>
+</li>
+</ol>
+<h2 id="有方向-有职业规划"><a href="#有方向-有职业规划" class="headerlink" title="有方向, 有职业规划"></a>有方向, 有职业规划</h2><p>数据驱动的思考方式,</p>
+<p>需要搞清楚公司的指标</p>
+<p>目标-&gt;现状-&gt;方案-&gt;实施-&gt;结果-&gt;目标</p>
+</div></div></body><script src="/js/highlight.min.js"></script><script src="/js/main.js"></script><script src="/js/bootstrap/bootstrap.min.js"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '');</script></html>
